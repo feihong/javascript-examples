@@ -4,8 +4,6 @@ Feihong's JavaScript Examples
 Install dependencies in virtualenv:
 
 ```
-# Dependencies that are needed to compile everything on Ubuntu:
-sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev
 pip install -r requirements.txt
 say "Hey I'm finally done!"
 ```
@@ -28,4 +26,10 @@ To check all available commands:
 
 ```
 nikola help
+```
+
+Deploy to GitHub Pages:
+
+```
+nikola github_deploy
 ```
