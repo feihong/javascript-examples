@@ -21,7 +21,7 @@ ReactDOM.render(
     <div>One</div>
     <HBox style={{color: 'purple', border: '2px dotted red'}}>
       <div>Apple</div>
-      <div>Banana pepper</div>
+      <div>Banana</div>
       <div>Cauliflower</div>
     </HBox>
     <div>Two</div>
@@ -29,6 +29,12 @@ ReactDOM.render(
     <HBox style={{color: 'brown', backgroundColor: 'lightgray'}}>
       <div>Four</div>
       <div>Five</div>
+      <VBox>
+        <div>Aardvark</div>
+        <div>Baboon</div>
+        <div>Canary</div>
+      </VBox>
+      <div>Six</div>
     </HBox>
   </VBox>,
   document.getElementById('example-2')
