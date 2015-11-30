@@ -127,4 +127,4 @@ function countChars(correctAnswer, givenAnswer) {
 ReactDOM.render(
   <WhatAmI hints={HINTS} answers={ANSWERS} />,
   document.getElementById('content')
-);
+)

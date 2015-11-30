@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "babel-preset-es2015": "latest",
+    "babel-preset-react": "latest",
+    "babelify": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "radium": "latest"
+  }
+}
