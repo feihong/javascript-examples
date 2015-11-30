@@ -1,0 +1,2 @@
+#!/bin/bash
+watchify --debug --no-bundle-external $1/app.js  -o ../files/$1/bundle.js -t babelify -v
