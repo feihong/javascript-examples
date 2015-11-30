@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "radium": "latest",
+    "react": "latest",
+    "react-addons-update": "latest",
+    "react-dom": "latest"
+  }
+}
