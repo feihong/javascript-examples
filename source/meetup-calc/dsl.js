@@ -1,6 +1,21 @@
+/*
+Sample input:
+
+steak frites 34.5
+baked salmon 25.6
+chicken pot pie 11.82
+
+Bill: horchata 4
+Ted: Manhattan 5.1
+Tofurkey sliders 7
+Kim:
+Borscht 5.49
+Stuffed cabbage 7.99
+
+*/
 
 export default function parse(text) {
-  let result = {}
+  let result = new Map()
   let currentGroup = 'group'
   let itemCount = 0
 
@@ -14,8 +29,10 @@ export default function parse(text) {
       currentGroup = item.group
     }
     if (item.name) {
-      result[currentGroup] = result[currentGroup] || []
-      result[currentGroup].push({name: item.name, price: item.price})
+      if (!result.get(currentGroup)) {
+        result.set(currentGroup, [])
+      }
+      result.get(currentGroup).push({name: item.name, price: item.price})
     }
   })
 

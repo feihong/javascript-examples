@@ -2,14 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Form from '../lib/form'
 import parse from './dsl'
-import { sum, sumAll } from './util'
+import { sum, sumAll, calculateEach } from './util'
 import { extend } from '../lib/util'
+import { numberFormat } from 'underscore.string'
 
 
 const DEFAULT_VALUES = {
+  attendees: 6,
   tax: 9.75,
   tip: 20,
-  serviceFee: 1,
+  serviceFee: 0,
 }
 
 const RESULT_FIELDS = [
@@ -36,13 +38,16 @@ class Calculator extends React.Component {
     return <div>
       <h2>Inputs</h2>
       <Form>
+        # of paying attendees: <input defaultValue='6' type='number'
+                                      onChange={this.changeHandler('attendees')} />
         Tax percentage: <input defaultValue='9.75'
                                onChange={this.changeHandler('tax')} />
         Tip percentage: <input defaultValue='20' type='number'
                                onChange={this.changeHandler('tip')} />
-        Service fee: <input defaultValue='1' type='number'
+        Service fee: <input defaultValue='0' type='number'
                             onChange={this.changeHandler('serviceFee')} />
-        Order details: <textarea cols='50' rows='8' onChange={this.handleDetailChange} />
+        Order details: <textarea cols='50' rows='8'
+                                 onChange={this.handleDetailChange} />
       </Form>
 
       <h2>Results</h2>
@@ -71,8 +76,22 @@ class Calculator extends React.Component {
       this.setState({results: null})
     } else {
       let subtotal = sumAll(state.detailValues)
+      let taxAmt = state.tax * subtotal * 0.01
+      let tipAmt = state.tip * subtotal * 0.01
+      let total = subtotal + taxAmt + tipAmt
+
       results.set('Subtotal', subtotal)
-      results.set('Tax', state.tax * subtotal * 0.01)
+      results.set(`Tax (${state.tax}% of subtotal)`, taxAmt)
+      results.set(`Tip (${state.tip}% of subtotal)`, tipAmt)
+      results.set('Total', total)
+
+      let {calcValues, totalPay} = calculateEach(state)
+      for (let [label, value] of calcValues) {
+        results.set(label, value)
+      }
+
+      results.set('Total to be paid', totalPay)
+      results.set('Service fees collected', totalPay - total)
 
       this.setState({results: results})
     }
@@ -93,9 +112,13 @@ class ResultTable extends React.Component {
     }
     let children = []
     for (let [key, val] of this.props.results) {
+      // If val is a number, convert it to a string
+      if (typeof val === 'number') {
+        val = numberFormat(val, 2)
+      }
       children.push(
         <p key={key} style={{display: 'table-row'}}>
-          <label style={{display: 'table-cell', paddingRight: 20}}>{key}</label>
+          <label style={{display: 'table-cell', paddingRight: 20}}>{key}:</label>
           <label style={{display: 'table-cell'}}>{val}</label>
         </p>
       )
