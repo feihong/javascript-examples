@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "lodash": "latest",
     "radium": "latest",
     "react": "latest",
     "react-addons-update": "latest",

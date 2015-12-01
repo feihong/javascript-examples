@@ -3,11 +3,16 @@
     "babel-preset-es2015": "latest",
     "babel-preset-react": "latest",
     "babelify": "latest",
+    "lodash": "latest",
+    "radium": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "radium": "latest"
+    "underscore.string": "latest"
   },
   "babel": {
-    "presets": ["es2015", "react"]
+    "presets": [
+      "es2015",
+      "react"
+    ]
   }
 }
