@@ -10,7 +10,7 @@ ReactDOM.render(
       <option value='1'>Guest</option>
       <option value='2'>Host</option>
     </select>
-    Date: <input name='date' type='date' />
+    URL: <input name='date' type='url' />
   </Form>,
   document.getElementById('example')
 )

@@ -1,6 +1,12 @@
 import React from 'react'
 
 
+export function extend(a, b) {
+  let newObj = Object.assign({}, a)
+  Object.assign(newObj, b)
+  return newObj
+}
+
 export function cloneElementMergeStyle(elem, style) {
   let newStyle = null
   if (typeof elem.props.style === 'undefined') {

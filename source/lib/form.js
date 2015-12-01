@@ -17,7 +17,7 @@ export default class Form extends React.Component {
     let result = []
     let children = this.props.children
     for (let i=0; i < children.length; i+=2) {
-      let label = <label style={{display: 'table-cell'}}>{children[i].trim()}</label>
+      let label = <label style={{display: 'table-cell', paddingRight: 10}}>{children[i].trim()}</label>
       let field = cloneElementMergeStyle(children[i + 1], {display: 'table-cell'})
       result.push(<p style={{display: 'table-row'}} key={i}>{label}{field}</p>)
     }
