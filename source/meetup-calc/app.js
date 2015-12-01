@@ -57,8 +57,8 @@ class Calculator extends React.Component {
 
   changeHandler(field) {
     return (evt) => {
-      let value = evt.target.value
-      this.setState({[field]: parseFloat(value)})
+      let value = parseFloat(evt.target.value)
+      this.setState({[field]: value})
       this.calculate(field, value)
     }
   }
