@@ -37,11 +37,16 @@ export function calculateEach(state) {
     calcValues.set(name + ' pays', val)
   }
 
-  let groupLabel = `Everyone ${sums.size ? 'else ' : ''}pays`
   let everyoneElseCount = state.attendees - names.length
   let everyoneElse = Math.ceil(multiplier * each) + state.serviceFee
   totalPay += everyoneElse * everyoneElseCount
-  calcValues.set(groupLabel, `${numberFormat(everyoneElse, 2)} × ${everyoneElseCount}`)
+
+  let groupLabel = 'Everyone pays'
+  if (sums.size) {
+    groupLabel = `Remaining ${everyoneElseCount} attendees pay`
+  }
+
+  calcValues.set(groupLabel, numberFormat(everyoneElse, 2))
 
   return {calcValues: calcValues, totalPay: totalPay}
 }

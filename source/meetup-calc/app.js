@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Form from '../lib/form'
 import parse from './dsl'
-import { sum, sumAll, calculateEach } from './util'
+import { sum, sumAll, calculateEach } from './calc'
 import { extend } from '../lib/util'
 import { numberFormat } from 'underscore.string'
 
