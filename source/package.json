@@ -6,6 +6,7 @@
     "lodash": "latest",
     "radium": "latest",
     "react": "latest",
+    "react-addons-update": "latest",
     "react-dom": "latest",
     "underscore.string": "latest"
   },
