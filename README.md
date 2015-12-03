@@ -16,6 +16,12 @@ To build the site:
 nikola build
 ```
 
+To remove all unknown files from generated site:
+
+```
+nikola check -f --clean-files
+```
+
 To see it:
 
 ```
