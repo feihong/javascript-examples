@@ -7,4 +7,7 @@
 .. description:
 .. type: text
 
-`What Am I </what-am-i>`_
+- `What Am I </what-am-i>`_
+- `Flexbox </flexbox>`_
+- `Form </form>`_
+- `Meetup Calculator </meetup-calc>`_
