@@ -1,0 +1,17 @@
+<%!
+  title = "Feihong's JavaScript Examples"
+%>
+<%inherit file="base.html" />
+
+<%namespace name="helper" file="helper.html" />
+
+<h1>${}</h1>
+
+<h2>Examples</h2>
+
+<%helper:pagelist>
+  what-am-i; What Am I
+  flexbox; Flexbox
+  form; Form
+  meetup-calc; Meetup Calculator
+</%helper:pagelist>

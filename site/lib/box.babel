@@ -1,0 +1,29 @@
+import React from 'react'
+import {extend} from '../lib/util'
+
+
+export class VBox extends React.Component {
+  render() {
+    return renderBox(false, this.props)
+  }
+}
+
+
+export class HBox extends React.Component {
+  render() {
+    return renderBox(true, this.props)
+  }
+}
+
+
+function renderBox(isHorizontal, props) {
+  let className = isHorizontal ? 'hbox' : 'vbox'
+  let newStyle = extend(props.style, {
+    display: 'flex',
+    flexDirection: isHorizontal ? 'row' : 'column'
+  })
+
+  return <div {...props} className={className} style={newStyle}>
+    {props.children}
+  </div>
+}

@@ -1,0 +1,16 @@
+
+<%def name="pagelist()">
+  <%
+    import re
+    lines = capture(caller.body).strip().splitlines()
+    lines = (re.split(r';\s+', line, 1) for line in lines)
+  %>
+
+  <ul>
+  % for slug, title in lines:
+    <li>
+      <a href="${slug}/">${title}</a>
+    </li>
+  % endfor
+  </ul>
+</%def>
