@@ -1,4 +1,0 @@
-Sitemap: http://feihong.github.io/javascript-examples/sitemapindex.xml
-
-User-Agent: *
-Host: feihong.github.io
