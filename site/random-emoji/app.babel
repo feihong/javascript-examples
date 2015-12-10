@@ -16,7 +16,12 @@ function getRandomShortname() {
 function shortnameToUrl(shortname) {
   let item = emojione.emojioneList[shortname]
   let unicode = item[item.length - 1].toUpperCase()
-  return emojione.imagePathSVG + unicode + '.svg' + emojione.cacheBustParam
+  return emojione.imagePathSVGSprites + '#emoji-' + unicode
+}
+
+// You have to use raw HTML here because JSX does not support namespaces.
+function getSvgHtml(shortname) {
+  return `<use xlink:href=${shortnameToUrl(shortname)}></use>`
 }
 
 
@@ -45,7 +50,7 @@ class EmojiOne extends BaseComponent {
       </span>
       <br />
       SVG:
-      <img width="130px" src={shortnameToUrl(this.state.shortname)} />
+      <svg width="130px" dangerouslySetInnerHTML={{__html: getSvgHtml(this.state.shortname)}} />
     </div>
   }
 
