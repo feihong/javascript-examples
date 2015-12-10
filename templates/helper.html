@@ -3,14 +3,20 @@
   <%
     import re
     lines = capture(caller.body).strip().splitlines()
-    lines = (re.split(r';\s+', line, 1) for line in lines)
+    lines = (re.split(r';\s+', line.strip(), 1) for line in lines)
+    baseurl = 'http://github.com/feihong/javascript-examples/tree/master/site'
   %>
 
-  <ul>
+  <table>
   % for slug, title in lines:
-    <li>
-      <a href="${slug}/">${title}</a>
-    </li>
+    <tr>
+      <td style="padding-right: 2em">
+        <a href="${slug}/">${title}</a>
+      </td>
+      <td>
+        <a href="${baseurl}/${slug}">Source</a>
+      </td>
+    </tr>
   % endfor
-  </ul>
+  </table>
 </%def>
