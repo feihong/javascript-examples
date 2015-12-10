@@ -4,7 +4,6 @@ import _ from 'lodash'
 import {BaseComponent} from '../lib/helper'
 
 
-emojione.imageType = 'svg'
 const shortnames = emojione.shortnames.split('|')
 
 
@@ -17,11 +16,6 @@ function shortnameToUrl(shortname) {
   let item = emojione.emojioneList[shortname]
   let unicode = item[item.length - 1].toUpperCase()
   return emojione.imagePathSVGSprites + '#emoji-' + unicode
-}
-
-// You have to use raw HTML here because JSX does not support namespaces.
-function getSvgHtml(shortname) {
-  return `<use xlink:href=${shortnameToUrl(shortname)}></use>`
 }
 
 
@@ -50,12 +44,25 @@ class EmojiOne extends BaseComponent {
       </span>
       <br />
       SVG:
-      <svg width="130px" dangerouslySetInnerHTML={{__html: getSvgHtml(this.state.shortname)}} />
+      <SVG width='130px' shortname={this.state.shortname} />
     </div>
   }
 
   handleClick() {
     this.setState({shortname: getRandomShortname()})
+  }
+}
+
+
+class SVG extends React.Component {
+  render() {
+    return <svg {...this.props} dangerouslySetInnerHTML={this.getSvgHtml()} />
+  }
+
+  // You have to use raw HTML here because JSX does not support namespaces.
+  getSvgHtml() {
+    let shortname = this.props.shortname
+    return {__html: `<use xlink:href=${shortnameToUrl(shortname)}></use>`}
   }
 }
 
