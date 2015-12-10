@@ -33,6 +33,8 @@ class EmojiOne extends BaseComponent {
     return <div>
       <button onClick={this.handleClick}>Random emoji</button>
       <br />
+      Total # of emojis: {shortnames.length}
+      <br />
       Shortname: <code>{this.state.shortname}</code>
       <br />
 
@@ -43,7 +45,7 @@ class EmojiOne extends BaseComponent {
       </span>
       <br />
       SVG:
-      <img width="150px" src={shortnameToUrl(this.state.shortname)} />
+      <img width="130px" src={shortnameToUrl(this.state.shortname)} />
     </div>
   }
 
