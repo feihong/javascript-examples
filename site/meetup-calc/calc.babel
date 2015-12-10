@@ -41,7 +41,7 @@ export function calculateEach(state) {
   let everyoneElse = Math.ceil(multiplier * each) + state.serviceFee
   totalPay += everyoneElse * everyoneElseCount
 
-  let groupLabel = 'Everyone pays'
+  let groupLabel = `All ${state.attendees} attendees pay`
   if (sums.size) {
     groupLabel = `Remaining ${everyoneElseCount} attendees pay`
   }
