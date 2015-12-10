@@ -3,8 +3,6 @@
 %>
 <%inherit file="example.html" />
 
-<p>Using this CDN: https://cdnjs.com/libraries/jplayer/</p>
-
 <%def name="include_css_for_skin(skin)">
   ## Options: pink.flag, blue.monday
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/skin/${skin}/css/jplayer.${skin}.min.css">
@@ -14,8 +12,8 @@
   ${include_css_for_skin('pink.flag')}
 </%block>
 
-<div id="jquery_jplayer_1" class="jp-jplayer"></div>
-<div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
+<!-- <div class="jp-jplayer"></div>
+<div class="jp-audio" role="application" aria-label="media player">
   <div class="jp-type-single">
     <div class="jp-gui jp-interface">
       <div class="jp-volume-controls">
@@ -50,7 +48,9 @@
       To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
     </div>
   </div>
-</div>
+</div> -->
+
+<div id='content'></div>
 
 
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
