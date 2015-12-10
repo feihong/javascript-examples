@@ -1,0 +1,29 @@
+
+$(() => {
+  initPlayer({
+    playerId: 'jquery_jplayer_1',
+    containerId: 'jp_container_1',
+    title: '每个人都是颗流星',
+    file: 'liuxing.m4a',
+  })
+})
+
+function initPlayer(config) {
+  $('#' + config.playerId).jPlayer({
+    ready: function() {
+      $(this).jPlayer('setMedia', {
+        title: config.title,
+        m4a: `${window.site}audio/${config.file}`
+      })
+    },
+    cssSelectorAncestor: '#' + config.containerId,
+    swfPath: 'https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/',
+    supplied: 'm4a',
+    useStateClassSkin: true,
+    autoBlur: false,
+    smoothPlayBar: true,
+    keyEnabled: true,
+    remainingDuration: true,
+    toggleDuration: true
+  })
+}
