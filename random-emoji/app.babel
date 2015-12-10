@@ -1,0 +1,66 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+import _ from 'lodash'
+import {BaseComponent} from '../lib/helper'
+
+
+emojione.imageType = 'svg'
+const shortnames = emojione.shortnames.split('|')
+
+
+function getRandomShortname() {
+  let index = _.random(0, shortnames.length - 1)
+  return shortnames[index]
+}
+
+function shortnameToUrl(shortname) {
+  let item = emojione.emojioneList[shortname]
+  let unicode = item[item.length - 1].toUpperCase()
+  return emojione.imagePathSVGSprites + '#emoji-' + unicode
+}
+
+// You have to use raw HTML here because JSX does not support namespaces.
+function getSvgHtml(shortname) {
+  return `<use xlink:href=${shortnameToUrl(shortname)}></use>`
+}
+
+
+class EmojiOne extends BaseComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      shortname: getRandomShortname(),
+    }
+    this._bind('handleClick')
+  }
+
+  render() {
+    return <div>
+      <button onClick={this.handleClick}>Random emoji</button>
+      <br />
+      Total # of emojis: {shortnames.length}
+      <br />
+      Shortname: <code>{this.state.shortname}</code>
+      <br />
+
+      <br />
+      Unicode:
+      <span style={{fontSize: '8em'}}>
+          {emojione.shortnameToUnicode(this.state.shortname)}
+      </span>
+      <br />
+      SVG:
+      <svg width="130px" dangerouslySetInnerHTML={{__html: getSvgHtml(this.state.shortname)}} />
+    </div>
+  }
+
+  handleClick() {
+    this.setState({shortname: getRandomShortname()})
+  }
+}
+
+
+ReactDOM.render(
+  <EmojiOne />,
+  document.getElementById('content')
+)
