@@ -1,3 +1,7 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {BaseComponent} from '../lib/helper'
+
 
 $(() => {
   initPlayer({
@@ -16,6 +20,9 @@ function initPlayer(config) {
         m4a: `${window.site}audio/${config.file}`
       })
     },
+    timeupdate: function(evt) {
+      console.log('Current time: ' + evt.jPlayer.status.currentTime);
+    },
     cssSelectorAncestor: '#' + config.containerId,
     swfPath: 'https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/',
     supplied: 'm4a',
@@ -27,3 +34,23 @@ function initPlayer(config) {
     toggleDuration: true
   })
 }
+
+
+class JPlayer extends BaseComponent {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    return <button onClick={this.handleClick}>Play</button>
+  }
+
+  handleClick() {
+    $('#jquery_jplayer_1').jPlayer('play', 122)
+  }
+}
+
+ReactDOM.render(
+  <JPlayer />,
+  document.getElementById('content')
+)

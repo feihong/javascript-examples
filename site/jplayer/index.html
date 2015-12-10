@@ -3,8 +3,15 @@
 %>
 <%inherit file="example.html" />
 
+<p>Using this CDN: https://cdnjs.com/libraries/jplayer/</p>
+
+<%def name="include_css_for_skin(skin)">
+  ## Options: pink.flag, blue.monday
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/skin/${skin}/css/jplayer.${skin}.min.css">
+</%def>
+
 <%block name="extrahead">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/skin/pink.flag/css/jplayer.pink.flag.min.css">
+  ${include_css_for_skin('pink.flag')}
 </%block>
 
 <div id="jquery_jplayer_1" class="jp-jplayer"></div>
@@ -44,6 +51,9 @@
     </div>
   </div>
 </div>
+
+<div id='content'></div>
+
 
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
