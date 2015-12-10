@@ -1,0 +1,129 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {BaseComponent} from '../lib/helper'
+
+
+// $(() => {
+//   initPlayer({
+//     player: document.getElementById('jquery_jplayer_1'),
+//     container: document.getElementById('jp_container_1'),
+//     title: '每个人都是颗流星',
+//     file: 'liuxing.m4a',
+//     ready: () => console.log('ready'),
+//     timeupdate: (e) => console.log(e.jPlayer.status.currentTime),
+//   })
+// })
+
+function initPlayer(config) {
+  $(config.player).jPlayer({
+    ready: function() {
+      $(this).jPlayer('setMedia', {
+        title: config.title,
+        m4a: `${window.site}audio/${config.file}`
+      })
+      config.ready()
+    },
+    timeupdate: config.timeupdate,
+    cssSelectorAncestor: config.container,
+    swfPath: 'https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/',
+    supplied: 'm4a',
+    useStateClassSkin: true,
+    autoBlur: false,
+    smoothPlayBar: true,
+    keyEnabled: true,
+    remainingDuration: true,
+    toggleDuration: true
+  })
+}
+
+
+class JPlayer extends BaseComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentTime: 0,
+      playerReady: false,
+    }
+
+    this._bind('handleClick')
+  }
+
+  componentDidMount() {
+    initPlayer({
+      player: '#' + this.props.player,
+      container: '#' + this.props.container,
+      title: this.props.title,
+      file: this.props.file,
+      ready: () => this.setState({playerReady: true}),
+      timeupdate: (evt) => this.setState({currentTime: evt.jPlayer.status.currentTime})
+    })
+  }
+
+  render() {
+    return <div>
+      <div id={this.props.player} className="jp-jplayer"></div>
+      {renderPlayerContainer(this)}
+      {this.renderPanel()}
+    </div>
+  }
+
+  renderPanel() {
+    return this.state.playerReady && <div>
+      <button onClick={this.handleClick}>Play at specific time</button>
+      <span>{this.state.currentTime}</span>
+    </div>
+  }
+
+  handleClick() {
+    $('#' + this.props.player).jPlayer('play', 122)
+  }
+}
+
+function renderPlayerContainer(comp) {
+  return <div id={comp.props.container} className="jp-audio" role="application" aria-label="media player">
+    <div className="jp-type-single">
+      <div className="jp-gui jp-interface">
+        <div className="jp-volume-controls">
+          <button className="jp-mute" role="button" tabIndex="0">mute</button>
+          <button className="jp-volume-max" role="button" tabIndex="0">max volume</button>
+          <div className="jp-volume-bar">
+            <div className="jp-volume-bar-value"></div>
+          </div>
+        </div>
+        <div className="jp-controls-holder">
+          <div className="jp-controls">
+            <button className="jp-play" role="button" tabIndex="0">play</button>
+            <button className="jp-stop" role="button" tabIndex="0">stop</button>
+          </div>
+          <div className="jp-progress">
+            <div className="jp-seek-bar">
+              <div className="jp-play-bar"></div>
+            </div>
+          </div>
+          <div className="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+          <div className="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+          <div className="jp-toggles">
+            <button className="jp-repeat" role="button" tabIndex="0">repeat</button>
+          </div>
+        </div>
+      </div>
+      <div className="jp-details">
+        <div className="jp-title" aria-label="title">&nbsp;</div>
+      </div>
+      <div className="jp-no-solution">
+        <span>Update Required</span>
+        To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+      </div>
+    </div>
+  </div>
+}
+
+
+ReactDOM.render(
+  <JPlayer
+    player='jp_container_1'
+    container='jp_container_1'
+    title='每个人都是颗流星'
+    file='liuxing.m4a' />,
+  document.getElementById('content')
+)
