@@ -4,38 +4,26 @@ Feihong's JavaScript Examples
 Install dependencies in virtualenv:
 
 ```
+mkvirtualenv static-site
 pip install -r requirements.txt
-say "Hey I'm finally done!"
 ```
 
-Configuration file for the site is `conf.py`.
+Configuration for the site can be found in `tasks.py`.
+
+To run the server:
+
+```
+invoke serve
+```
 
 To build the site:
 
 ```
-nikola build
-```
-
-To remove all unknown files from generated site:
-
-```
-nikola check -f --clean-files
-```
-
-To see it:
-
-```
-nikola auto -b
-```
-
-To check all available commands:
-
-```
-nikola help
+invoke build
 ```
 
 Deploy to GitHub Pages:
 
 ```
-nikola github_deploy
+invoke publish
 ```
