@@ -1,0 +1,17 @@
+<%!
+    title = 'Emoji Browser'
+%>
+<%inherit file="example.html" />
+
+<%block name="extrahead">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.0.0/assets/css/emojione.min.css">
+</%block>
+
+<div id='content'></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.0.0/lib/js/emojione.min.js"></script>
+<script>
+emojione.imageType = 'svg';
+emojione.sprites = true;
+emojione.imagePathSVGSprites = '${site}images/emojione.sprites.svg';
+</script>

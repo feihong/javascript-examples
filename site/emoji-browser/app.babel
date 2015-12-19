@@ -1,0 +1,94 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+import _ from 'lodash'
+import {BaseComponent} from '../lib/helper'
+
+
+const shortnames = emojione.shortnames.split('|')
+// Number of items on each page:
+const pageSize = 100
+
+
+class EmojiBrowser extends BaseComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      page: 0,
+    }
+    this._bind('handleSelectChange')
+  }
+  render() {
+    return <div>
+      <div>Number of emojis: {shortnames.length}</div>
+      <select onChange={this.handleSelectChange}>
+        {this.renderOptions()}
+      </select>
+      <div>
+        {this.renderSvgs()}
+      </div>
+    </div>
+  }
+  renderOptions() {
+    let pageCount = Math.ceil(shortnames.length / 100.0)
+    let results = []
+
+    for (let i=0; i < pageCount; i++) {
+      let [start, end] = getPageRange(i)
+      if (i < (pageCount-1)) {
+        end = end - 1
+      }
+      results.push(<option key={i} value={i}>{start+1} - {end}</option>)
+    }
+    return results
+  }
+  renderSvgs() {
+    return getShortnamesForPage(this.state.page).map((shortname) => {
+      return <SVG shortname={shortname} />
+    })
+  }
+  handleSelectChange(evt) {
+    this.setState({page: parseInt(evt.target.value)})
+  }
+}
+
+
+class SVG extends React.Component {
+  render() {
+    return <svg {...this.props}
+                className="emojione"
+                title={this.props.shortname}
+                style={{fontSize: '30px'}}
+                dangerouslySetInnerHTML={this.getSvgHtml()} />
+  }
+  // You have to use raw HTML here because JSX does not support namespaces.
+  getSvgHtml() {
+    let shortname = this.props.shortname
+    return {__html: `<use xlink:href=${this.shortnameToUrl(shortname)}></use>`}
+  }
+  shortnameToUrl(shortname) {
+    let item = emojione.emojioneList[shortname]
+    let unicode = item[item.length - 1]
+    return emojione.imagePathSVGSprites + '#emoji-' + unicode
+  }
+}
+
+
+function getPageRange(pageIndex) {
+  let start = pageIndex * pageSize
+  let end = (pageIndex + 1) * pageSize
+  if (end > shortnames.length) {
+    end = shortnames.length
+  }
+  return [start, end]
+}
+
+function getShortnamesForPage(pageIndex) {
+  let [start, end] = getPageRange(pageIndex)
+  return shortnames.slice(start, end)
+}
+
+
+ReactDOM.render(
+  <EmojiBrowser />,
+  document.getElementById('content')
+)
