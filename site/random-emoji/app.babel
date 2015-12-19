@@ -14,12 +14,12 @@ function getRandomShortname() {
 
 function shortnameToUrl(shortname) {
   let item = emojione.emojioneList[shortname]
-  let unicode = item[item.length - 1].toUpperCase()
+  let unicode = item[item.length - 1]
   return emojione.imagePathSVGSprites + '#emoji-' + unicode
 }
 
 
-class EmojiOne extends BaseComponent {
+class RandomEmoji extends BaseComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -68,6 +68,6 @@ class SVG extends React.Component {
 
 
 ReactDOM.render(
-  <EmojiOne />,
+  <RandomEmoji />,
   document.getElementById('content')
 )
