@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import _ from 'lodash'
+import Lazy from 'lazy.js'
 import {BaseComponent} from '../lib/helper'
 import emojimeta from './emojimeta'
 
@@ -8,14 +8,19 @@ import emojimeta from './emojimeta'
 const shortnames = getUniqueShortnames() //emojione.shortnames.split('|')
 // Number of items on each page:
 const pageSize = 100
+// Number of pages:
 const pageCount = Math.ceil(shortnames.length / pageSize)
 
 
 class EmojiBrowser extends BaseComponent {
   constructor(props) {
     super(props)
-    this.state = {page: 0}
-    this._bind('handleSelectChange', 'handleLeftClick', 'handleRightClick')
+    this.state = {
+      page: 0,
+      selectedShortnames: []
+    }
+    this._bind('handleSelectChange', 'handleLeftClick', 'handleRightClick',
+               'handleSvgChange')
   }
   componentDidMount() {
     // Handle left and right key presses.
@@ -37,6 +42,10 @@ class EmojiBrowser extends BaseComponent {
         {this.renderOptions()}
       </select>
       <div>
+        <textarea style={{width: '100%'}} rows="2"
+                  value={this.state.selectedShortnames.join('\n')} />
+      </div>
+      <div style={{marginTop: '10px'}}>
         <ArrowButton onClick={this.handleLeftClick}>◀</ArrowButton>
         {this.renderSvgs()}
         <ArrowButton onClick={this.handleRightClick}>▶</ArrowButton>
@@ -44,22 +53,22 @@ class EmojiBrowser extends BaseComponent {
     </div>
   }
   renderOptions() {
-    let results = []
-
-    for (let i=0; i < pageCount; i++) {
+    return Lazy.range(0, pageCount).map((i) => {
       let [start, end] = getPageRange(i)
-      if (i < (pageCount-1)) {
-        end = end - 1
-      }
-      results.push(<option key={i} value={i}>{start+1} - {end}</option>)
-    }
-    return results
+        if (i < (pageCount-1)) {
+          end = end - 1
+        }
+        return <option key={i} value={i}>{start+1} - {end}</option>
+    }).toArray()
   }
   renderSvgs() {
     return getShortnamesForPage(this.state.page).map((shortname) => {
-      return <SVG key={shortname} shortname={shortname} />
+      return <SVG key={shortname}
+                  shortname={shortname}
+                  onChange={this.handleSvgChange} />
     })
   }
+
   handleSelectChange(evt) {
     this.setState({page: parseInt(evt.target.value)})
   }
@@ -77,32 +86,59 @@ class EmojiBrowser extends BaseComponent {
     }
     this.setState({page: page})
   }
+  handleSvgChange(key, selected) {
+    let ssn = this.state.selectedShortnames
+    if (selected) {
+      this.setState({selectedShortnames: Lazy(ssn).concat([key]).toArray()})
+    } else {
+      this.setState({selectedShortnames: Lazy(ssn).without(key).toArray()})
+    }
+  }
 }
 
 
-class SVG extends React.Component {
+class SVG extends BaseComponent {
+  constructor(props) {
+    super(props)
+    this.state = {selected: false}
+    let sn = this.props.shortname
+    this.shortnameKey = sn.substring(1, sn.length-1)
+    this._bind('handleClick')
+  }
   render() {
     let shortname = this.props.shortname
-    let key = shortname.substring(1, shortname.length-1)
-    if (!(key in emojimeta)) {
-      return null
+    let item = emojimeta[this.shortnameKey]
+    let title = `${item.name} (${item.category})`
+
+    let style = {
+      fontSize: '40px',
+      border: `1px dashed ${this.state.selected ? 'gray': 'white'}`,
+      backgroundColor: this.state.selected ? 'yellow' : 'white',
     }
-    let title = `${emojimeta[key].name} (${emojimeta[key].category})`
+
     return <svg {...this.props}
                 className="emojione"
                 title={title}
-                style={{fontSize: '40px'}}
-                dangerouslySetInnerHTML={this.getSvgHtml()} />
+                style={style}
+                dangerouslySetInnerHTML={this.getSvgHtml()}
+                onClick={this.handleClick} />
   }
-  // You have to use raw HTML here because JSX does not support namespaces.
   getSvgHtml() {
     let shortname = this.props.shortname
+    // You have to use raw HTML here because JSX does not support namespaces.
     return {__html: `<use xlink:href=${this.shortnameToUrl(shortname)}></use>`}
   }
   shortnameToUrl(shortname) {
     let item = emojione.emojioneList[shortname]
     let unicode = item[item.length - 1]
     return emojione.imagePathSVGSprites + '#emoji-' + unicode
+  }
+  handleClick() {
+    let newState = !this.state.selected
+    this.setState({selected: newState})
+    if (this.props.onChange) {
+      this.props.onChange(this.shortnameKey, newState)
+    }
   }
 }
 
