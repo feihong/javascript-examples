@@ -5,7 +5,7 @@ import {BaseComponent} from '../lib/helper'
 import emojimeta from './emojimeta'
 
 
-const shortnames = emojione.shortnames.split('|')
+const shortnames = getUniqueShortnames() //emojione.shortnames.split('|')
 // Number of items on each page:
 const pageSize = 100
 const pageCount = Math.ceil(shortnames.length / pageSize)
@@ -14,14 +14,25 @@ const pageCount = Math.ceil(shortnames.length / pageSize)
 class EmojiBrowser extends BaseComponent {
   constructor(props) {
     super(props)
-    this.state = {
-      page: 0,
-    }
+    this.state = {page: 0}
     this._bind('handleSelectChange', 'handleLeftClick', 'handleRightClick')
+  }
+  componentDidMount() {
+    // Handle left and right key presses.
+    document.addEventListener('keypress', (evt) => {
+      switch (evt.keyCode) {
+        case 37:
+          this.handleLeftClick()
+          break
+        case 39:
+          this.handleRightClick()
+          break
+      }
+    })
   }
   render() {
     return <div>
-      <div>Number of emojis: {shortnames.length}</div>
+      <div>Number of unique emojis: {shortnames.length}</div>
       <select onChange={this.handleSelectChange} value={this.state.page}>
         {this.renderOptions()}
       </select>
@@ -80,7 +91,7 @@ class SVG extends React.Component {
     return <svg {...this.props}
                 className="emojione"
                 title={title}
-                style={{fontSize: '36px'}}
+                style={{fontSize: '40px'}}
                 dangerouslySetInnerHTML={this.getSvgHtml()} />
   }
   // You have to use raw HTML here because JSX does not support namespaces.
@@ -109,6 +120,14 @@ class ArrowButton extends BaseComponent {
       {this.props.children}
     </button>
   }
+}
+
+
+function getUniqueShortnames() {
+  return emojione.shortnames.split('|').filter((sn) => {
+    let key = sn.substring(1, sn.length-1)
+    return key in emojimeta
+  })
 }
 
 function getPageRange(pageIndex) {
