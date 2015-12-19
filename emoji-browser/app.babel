@@ -1,0 +1,132 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+import _ from 'lodash'
+import {BaseComponent} from '../lib/helper'
+import emojimeta from './emojimeta'
+
+
+const shortnames = emojione.shortnames.split('|')
+// Number of items on each page:
+const pageSize = 100
+const pageCount = Math.ceil(shortnames.length / pageSize)
+
+
+class EmojiBrowser extends BaseComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      page: 0,
+    }
+    this._bind('handleSelectChange', 'handleLeftClick', 'handleRightClick')
+  }
+  render() {
+    return <div>
+      <div>Number of emojis: {shortnames.length}</div>
+      <select onChange={this.handleSelectChange} value={this.state.page}>
+        {this.renderOptions()}
+      </select>
+      <div>
+        <ArrowButton onClick={this.handleLeftClick}>◀</ArrowButton>
+        {this.renderSvgs()}
+        <ArrowButton onClick={this.handleRightClick}>▶</ArrowButton>
+      </div>
+    </div>
+  }
+  renderOptions() {
+    let results = []
+
+    for (let i=0; i < pageCount; i++) {
+      let [start, end] = getPageRange(i)
+      if (i < (pageCount-1)) {
+        end = end - 1
+      }
+      results.push(<option key={i} value={i}>{start+1} - {end}</option>)
+    }
+    return results
+  }
+  renderSvgs() {
+    return getShortnamesForPage(this.state.page).map((shortname) => {
+      return <SVG key={shortname} shortname={shortname} />
+    })
+  }
+  handleSelectChange(evt) {
+    this.setState({page: parseInt(evt.target.value)})
+  }
+  handleLeftClick() {
+    let page = this.state.page - 1
+    if (page < 0) {
+      page = 0
+    }
+    this.setState({page: page})
+  }
+  handleRightClick() {
+    let page = this.state.page + 1
+    if (page > (pageCount - 1)) {
+      page = pageCount - 1
+    }
+    this.setState({page: page})
+  }
+}
+
+
+class SVG extends React.Component {
+  render() {
+    let shortname = this.props.shortname
+    let key = shortname.substring(1, shortname.length-1)
+    if (!(key in emojimeta)) {
+      return null
+    }
+    let title = `${emojimeta[key].name} (${emojimeta[key].category})`
+    return <svg {...this.props}
+                className="emojione"
+                title={title}
+                style={{fontSize: '36px'}}
+                dangerouslySetInnerHTML={this.getSvgHtml()} />
+  }
+  // You have to use raw HTML here because JSX does not support namespaces.
+  getSvgHtml() {
+    let shortname = this.props.shortname
+    return {__html: `<use xlink:href=${this.shortnameToUrl(shortname)}></use>`}
+  }
+  shortnameToUrl(shortname) {
+    let item = emojione.emojioneList[shortname]
+    let unicode = item[item.length - 1]
+    return emojione.imagePathSVGSprites + '#emoji-' + unicode
+  }
+}
+
+
+class ArrowButton extends BaseComponent {
+  render() {
+    let style = {
+      border: '1px solid black',
+      borderRadius: '4px',
+      textAlign: 'center',
+      padding: '5px 10px',
+      margin: '0 10px'
+    }
+    return <button {...this.props} style={style}>
+      {this.props.children}
+    </button>
+  }
+}
+
+function getPageRange(pageIndex) {
+  let start = pageIndex * pageSize
+  let end = (pageIndex + 1) * pageSize
+  if (end > shortnames.length) {
+    end = shortnames.length
+  }
+  return [start, end]
+}
+
+function getShortnamesForPage(pageIndex) {
+  let [start, end] = getPageRange(pageIndex)
+  return shortnames.slice(start, end)
+}
+
+
+ReactDOM.render(
+  <EmojiBrowser />,
+  document.getElementById('content')
+)

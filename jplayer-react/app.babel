@@ -3,17 +3,6 @@ import ReactDOM from 'react-dom'
 import {BaseComponent} from '../lib/helper'
 
 
-// $(() => {
-//   initPlayer({
-//     player: document.getElementById('jquery_jplayer_1'),
-//     container: document.getElementById('jp_container_1'),
-//     title: '每个人都是颗流星',
-//     file: 'liuxing.m4a',
-//     ready: () => console.log('ready'),
-//     timeupdate: (e) => console.log(e.jPlayer.status.currentTime),
-//   })
-// })
-
 function initPlayer(config) {
   $(config.player).jPlayer({
     ready: function() {
