@@ -3,6 +3,7 @@
     "babel-preset-es2015": "latest",
     "babel-preset-react": "latest",
     "babelify": "latest",
+    "lazy.js": "latest",
     "lodash": "latest",
     "radium": "latest",
     "react": "latest",

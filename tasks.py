@@ -60,7 +60,7 @@ def clean():
 def buildjs(name):
     if name == 'lib':
         run("""browserify \
-          -r lodash -r underscore.string \
+          -r lodash -r underscore.string -r lazy.js \
           -r react -r react-dom -r radium \
           -o site/js/lib-bundle.js
         """)
