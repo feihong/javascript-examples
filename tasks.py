@@ -57,29 +57,12 @@ def clean():
 
 
 @task
-def buildjs(name):
-    if name == 'lib':
-        run("""browserify \
-          -r lodash -r underscore.string -r lazy.js \
-          -r react -r react-dom -r radium \
-          -o site/js/lib-bundle.js
-        """)
-    else:
-        run("""browserify --debug --no-bundle-external --extension=.babel \
-          site/%(name)s/app.babel \
-          -o site/%(name)s/bundle.js \
-          -t [ babelify --extensions .babel --presets [ es2015 react ] ]
-        """ % {'name': name})
-
+def buildjs():
+    run('webpack --progress --colors')
 
 @task
-def watchjs(name):
-    run("""watchify --debug --no-bundle-external --extension=.babel \
-      site/%(name)s/app.babel \
-      -o site/%(name)s/bundle.js \
-      -t [ babelify --extensions .babel --presets [ es2015 react ] ] \
-      -v
-    """ % {'name': name})
+def watchjs():
+    run('webpack --progress --colors --watch')
 
 
 @task

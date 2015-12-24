@@ -1,5 +1,5 @@
 import React from 'react'
-import {extend, cloneElementMergeStyle} from '../lib/util'
+import {extend, cloneElementMergeStyle} from 'lib/util'
 
 
 export default class Form extends React.Component {

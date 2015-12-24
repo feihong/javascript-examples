@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Lazy from 'lazy.js'
-import {BaseComponent} from '../lib/helper'
+import {BaseComponent} from 'lib/helper'
 import emojimeta from './emojimeta'
 
 
-const shortnames = getUniqueShortnames() //emojione.shortnames.split('|')
+const shortnames = getUniqueShortnames()
 // Number of items on each page:
 const pageSize = 100
 // Number of pages:

@@ -1,6 +1,13 @@
 Feihong's JavaScript Examples
 =============================
 
+Make sure you have node tools installed:
+
+```
+npm install -g webpack
+npm install
+```
+
 Install dependencies in virtualenv:
 
 ```

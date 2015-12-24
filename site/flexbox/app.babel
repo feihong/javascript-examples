@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {HBox, VBox} from '../lib/box'
+import {HBox, VBox} from 'lib/box'
 
 ReactDOM.render(
   <HBox style={{color: 'yellow', backgroundColor: 'green'}}>

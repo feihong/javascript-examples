@@ -17,17 +17,3 @@ export function cloneElementMergeStyle(elem, style) {
   }
   return React.cloneElement(elem, {style: newStyle})
 }
-
-// function cloneElementMergeClassName(elem, className, key) {
-//   let cfg = {}
-//   if (typeof elem.props.className === 'undefined') {
-//     cfg.className = className
-//   } else {
-//     cfg.className = `${elem.props.className} ${className}`
-//   }
-//   if (key) {
-//     cfg.key = key
-//   }
-//   return React.cloneElement(elem, cfg)
-// }
-//
