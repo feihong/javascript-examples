@@ -1,18 +1,66 @@
+import 'babel-polyfill'       // this allows use of generator functions
 import Lazy from 'lazy.js'
 
-function print(obj) {
-  let para = $('<p></p>')
-  para.text(JSON.stringify(obj))
-  $('#output').append(para)
+
+class IteratorWrapper extends Lazy.Sequence {
+  constructor(iterator) {
+    super()
+    this.iterator = iterator
+  }
+  each(fn) {
+    for (let item of this.iterator) {
+      if (fn(item) === false) {
+        return false
+      }
+    }
+    return true
+  }
+}
+
+Lazy.extensions || (Lazy.extensions = [])
+
+Lazy.extensions.push((source) => {
+  if (Symbol.iterator in source) {
+    return new IteratorWrapper(source)
+  }
+})
+
+function print(...args) {
+  let text = args.map((x) => {
+    if (x instanceof Array || x instanceof Object) {
+      return JSON.stringify(x, null, 2)
+    } else {
+      return x.toString()
+    }
+  }).join(' ')
+  let para = document.createElement('p')
+  para.textContent = text
+  document.getElementById('output').appendChild(para)
 }
 
 let array1 = Lazy.range(1, 8).map(x => `option ${x + 1}`).toArray()
-print(array1)
+print('range:', array1)
 
-let seq1 = Lazy([1, 2, 3])
-let array2 = seq1.concat([4]).toArray()
-print(array2)
+let array2 = Lazy([1, 2, 3]).concat([4]).toArray()
+print('concat:', array2)
 
-let seq2 = Lazy([4, 5, 6, 7])
-let array3 = seq2.without(5, 7).toArray()
-print(array3)
+let array3 = Lazy([4, 5, 6, 7]).without(5, 7).toArray()
+print('without:', array3)
+
+let set = new Set([44, 55, 66, 77, 44])
+print('set:', Lazy(set).toArray())
+
+let map = new Map([['a', 1], ['b', 2], ['c', 3]])
+print('Running each() on map:')
+Lazy(map).each((pair) => {
+  print(pair)
+})
+
+print('map.entries():', Lazy(map.entries()).toArray())
+
+let generator = function * () {
+  for (let i=0; i < 8; i++) {
+    yield i
+  }
+}
+print('generator:', Lazy(generator()).toArray())
