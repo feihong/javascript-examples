@@ -44,6 +44,7 @@ def serve():
 @task
 def build():
     clean()
+    buildjs()
     for src in Path('site').rglob('*?.*'):
         dest = Path('build') / src.relative_to('site')
         print dest
@@ -58,11 +59,11 @@ def clean():
 
 @task
 def buildjs():
-    run('webpack --progress --colors')
+    run('webpack --progress --colors --optimize-minimize')
 
 @task
 def watchjs():
-    run('webpack --progress --colors --watch')
+    run('webpack --progress --colors -d --watch')
 
 
 @task
