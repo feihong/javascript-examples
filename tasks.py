@@ -47,6 +47,9 @@ def build():
     buildjs()
     for src in Path('site').rglob('*?.*'):
         dest = Path('build') / src.relative_to('site')
+        # The sourcemap files are useless in production.
+        if dest.suffix == '.map':
+            continue
         print dest
         copy_or_generate(src, dest)
 
