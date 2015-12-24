@@ -1,4 +1,6 @@
 *.pyc
 *.map
+bundle.js
+vendor.bundle.js
 build
 node_modules
