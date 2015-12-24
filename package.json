@@ -12,6 +12,7 @@
     "react-addons-update": "latest",
     "react-dom": "latest",
     "underscore.string": "latest",
-    "webpack": "latest"
+    "webpack": "latest",
+    "wu": "latest"
   }
 }

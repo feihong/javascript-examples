@@ -1,8 +1,32 @@
 import Lazy from 'lazy.js'
 
+
+class IteratorWrapper extends Lazy.Sequence {
+  constructor(iterator) {
+    super()
+    this.iterator = iterator
+  }
+  each(fn) {
+    for (let item of this.iterator) {
+      if (fn(item) === false) {
+        return false
+      }
+    }
+    return true
+  }
+}
+
+Lazy.extensions || (Lazy.extensions = [])
+
+Lazy.extensions.push((source) => {
+  if (Symbol.iterator in source) {
+    return new IteratorWrapper(source)
+  }
+})
+
 function print(obj) {
   let para = document.createElement('p')
-  para.textContent = JSON.stringify(obj)
+  para.textContent = JSON.stringify(obj, null, 2)
   document.getElementById('output').appendChild(para)
 }
 
@@ -18,5 +42,11 @@ let array3 = seq2.without(5, 7).toArray()
 print(array3)
 
 let set = new Set([44, 55, 66, 77])
-print([...set])               // [44,55,66,77]
 print(Lazy(set).toArray())    // []
+
+let map = new Map([['a', 1], ['b', 2], ['c', 3]])
+Lazy(map).each((pair) => {
+  print(pair)
+})
+
+print(Lazy(map.entries()).toArray())
