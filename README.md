@@ -1,6 +1,10 @@
 Feihong's JavaScript Examples
 =============================
 
+This is a collection of JavaScript examples, which are published to http://feihong.github.io/javascript-examples/.
+
+## Installation
+
 Make sure you have node tools installed:
 
 ```
@@ -16,6 +20,8 @@ pip install -r requirements.txt
 ```
 
 Configuration for the site can be found in `tasks.py`.
+
+## Commands
 
 To run the server:
 
