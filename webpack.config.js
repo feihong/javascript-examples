@@ -5,6 +5,7 @@ var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin")
 // All apps that need to be built by WebPack are listed here.
 const APPS = [
   'lazy-js',
+  'wu',
   'what-am-i',
   'flexbox',
   'form',
