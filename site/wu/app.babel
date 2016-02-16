@@ -19,11 +19,12 @@ function sum(iterable) {
   return wu(iterable).reduce((x, y) => x + y)
 }
 
-print(sum([1, 2, 3]))         // 6
+print('Sum of array:', sum([1, 2, 3]))  // 6
+
 let genFunc = (function *() {
   yield 4; yield 5; yield 6;
 })
-print(sum(genFunc()))         // 15
+print('Sum of generator function invocation:', sum(genFunc()))  // 15
 
 let map = new Map()
 map.set('group', [
@@ -34,9 +35,13 @@ map.set('tommy', [
   {name: 'manhattan', price: 9.31},
   {name: 'martini', price: 6.47},
 ])
+map.set('andy', [
+  {name: 'haggis', price: 22}
+])
 
 function sumAllPricesInMap(map) {
   let items = wu(map.values()).flatten()
   return items.reduce((x, y) => x + y.price, 0)
 }
-print(sumAllPricesInMap(map))   // 46.28
+print('map:', map)
+print('sumAllPricesInMap(map):', sumAllPricesInMap(map))   // 68.28
